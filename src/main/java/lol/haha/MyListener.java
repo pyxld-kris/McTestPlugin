@@ -35,19 +35,39 @@ public class MyListener implements Listener {
             Bukkit.getServer().broadcastMessage("jump");
 
             Player player = event.getPlayer();
+            player.setVelocity(player.getLocation().getDirection().multiply(3.0D));
+
+            Bukkit.getScheduler().runTaskLater(Haha.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    player.setVelocity(player.getLocation().getDirection().multiply(3.0D));
+                }
+            }, 4);
+
+            deleteSurroundingBlocks(player.getLocation());
+
             Bukkit.getScheduler().runTaskLater(Haha.getInstance(), new Runnable() {
                 @Override
                 public void run() {
                     System.out.println("SPAWN_BLOCK");
                     spawnBlockUnderPlayer(player);
                 }
-            }, 1000);
+            }, 30);
             //player.damage(1);
         }
     }
 
     public void spawnBlockUnderPlayer(Player player) {
-        player.getLocation().getBlock().getRelative(BlockFace.DOWN).setType(Material.DIRT);
+        Block downBlock = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
+        downBlock.setType(Material.DIRT);
+        downBlock.getRelative(BlockFace.NORTH).setType(Material.DIRT);
+        downBlock.getRelative(BlockFace.SOUTH).setType(Material.DIRT);
+        downBlock.getRelative(BlockFace.EAST).setType(Material.DIRT);
+        downBlock.getRelative(BlockFace.WEST).setType(Material.DIRT);
+        downBlock.getRelative(BlockFace.NORTH_EAST).setType(Material.DIRT);
+        downBlock.getRelative(BlockFace.SOUTH_EAST).setType(Material.DIRT);
+        downBlock.getRelative(BlockFace.NORTH_WEST).setType(Material.DIRT);
+        downBlock.getRelative(BlockFace.SOUTH_WEST).setType(Material.DIRT);
     }
 
     public void deleteSurroundingBlocks(Location location) {
